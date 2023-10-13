@@ -1,18 +1,25 @@
 "use client"
 
-import { useState} from "react"
-import { useGetProductsQuery,useGetFilteredProductsQuery } from "../../rtk/features/apiReducerSlice"
-import List from "../../component/List"
-import Item from "../../component/Item"
-import Text from "../../component/Text"
-import { productType } from "../../interface/interface"
-import { useRouter } from "next/navigation"
-import Button from "../../component/Button"
-import Input from "../../component/Input"
+import React, { useState } from 'react';
+import { useGetFilteredProductsQuery } from '../../../rtk/features/apiReducerSlice' 
+import { useRouter } from 'next/navigation';
+import Button from '../../../component/Button';
+import Input from '../../../component/Input';
+import Text from '../../../component/Text';
+import List from '../../../component/List';
+import { productType } from '../../../interface/interface';
+import Item from '../../../component/Item';
 
-export default function ProductCatalog() {
+
+
+interface pageProp {
+    params: {tag:string},
+}
+
+const FilterPage = ({params}:pageProp) => {
+    const {tag} =  params;
     const [filterTag,setFilterTag] = useState<string>('');
-    const {data:allProducts,isLoading, isSuccess} =useGetProductsQuery('');
+    const {data:allProducts,isLoading, isSuccess} =useGetFilteredProductsQuery(tag);
     const router = useRouter();
     const handelRoute = (route:string) => {
         router.push(route);
@@ -50,5 +57,7 @@ export default function ProductCatalog() {
                 }
             </List>
         </div>
-    ) 
+    )
 }
+
+export default FilterPage;
